@@ -15,13 +15,20 @@
 <h3>Existing Items</h3>
 <table class="table">
   <thead>
-    <tr><th>Image</th><th>Name</th><th>Price</th><th>Actions</th></tr>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
   </thead>
   <tbody>
     {% for item in items %}
     <tr>
       <td style="width:90px;">
-        {% if item.image_url %}<img class="thumb" src="{{ item.image_url }}" alt="">{% endif %}
+        {% if item.image_url %}
+          <img class="thumb" src="{{ item.image_url }}" alt="">
+        {% endif %}
       </td>
       <td>{{ item.name }}</td>
       <td>₹{{ '%.2f'|format(item.price) }}</td>
@@ -30,6 +37,34 @@
           <button type="submit" class="danger">Delete</button>
         </form>
       </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Orders</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>User</th>
+      <th>Total (₹)</th>
+      <th>Screenshot</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr>
+      <td>{{ order.id }}</td>
+      <td>{{ order.user.username }}</td>
+      <td>₹{{ '%.2f'|format(order.total_amount) }}</td>
+      <td>
+        {% if order.screenshot %}
+          <img src="{{ url_for('uploaded_file', filename=order.screenshot) }}" alt="screenshot" style="width:80px; border-radius:4px;">
+        {% endif %}
+      </td>
+      <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
     </tr>
     {% endfor %}
   </tbody>

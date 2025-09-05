@@ -80,6 +80,26 @@ class Cart(db.Model):
     item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
     quantity = db.Column(db.Integer, default=1)
 
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    total_amount = db.Column(db.Float, nullable=False)
+    screenshot = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # 🔗 Relationship with User
+    user = db.relationship('User', backref=db.backref('orders', lazy=True))
+
+
+
+class OrderItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+    item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
+    quantity = db.Column(db.Integer, default=1)
+
+    
+
 # -------------------- Helpers --------------------
 def current_user():
     uid = session.get('user_id')
@@ -173,8 +193,11 @@ def admin():
             db.session.commit()
             flash("Item added.", "ok")
         return redirect(url_for('admin'))
+
     items = Item.query.order_by(Item.created_at.desc()).all()
-    return render_template('admin.html', items=items, user=current_user())
+    orders = Order.query.order_by(Order.created_at.desc()).all()   # fetch orders
+    return render_template('admin.html', items=items, orders=orders, user=current_user())
+
 
 @app.route('/admin/delete/<int:item_id>', methods=['POST'])
 @admin_required
@@ -261,11 +284,33 @@ def send_screenshot():
         path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         f.save(path)
 
+        user = current_user()
+
+        # --- Calculate cart total ---
+        entries = Cart.query.filter_by(user_id=user.id).all()
+        total = 0
+        for e in entries:
+            item = Item.query.get(e.item_id)
+            if item:
+                total += item.price * max(1, e.quantity)
+
+        # --- Create Order ---
+        order = Order(user_id=user.id, total_amount=total, screenshot=filename)
+        db.session.add(order)
+        db.session.flush()  # get order.id before commit
+
+        # --- Add Order Items ---
+        for e in entries:
+            db.session.add(OrderItem(order_id=order.id, item_id=e.item_id, quantity=e.quantity))
+
+        db.session.commit()
+
+        # --- Send email as before ---
         try:
             msg = Message(
                 subject="Payment Screenshot",
                 recipients=[ADMIN_EMAIL],
-                body=f"User {current_user().username} uploaded a payment screenshot."
+                body=f"User {user.username} placed an order. Total: {total}"
             )
             with app.open_resource(path) as fp:
                 ext = filename.lower().rsplit('.', 1)[-1] if '.' in filename else 'png'
@@ -273,7 +318,7 @@ def send_screenshot():
                 msg.attach(filename, mime, fp.read())
 
             mail.send(msg)
-            flash("Screenshot sent to admin email!", "ok")
+            flash("Screenshot sent to admin email and order recorded!", "ok")
         except Exception as e:
             flash(f"Email send simulated (or failed): {e}", "warn")
 
