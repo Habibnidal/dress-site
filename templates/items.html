@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Dresses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .price-tag {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+              linear-gradient(to left, #FFD700, #000000);
+        }
+        
+        .add-to-cart-btn {
+           background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+              linear-gradient(to left, #FFD700, #000000);
+            transition: all 0.3s ease;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.3);
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        
+        @media (max-width: 640px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+        
+        .dress-image {
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            
+        }
+        
+        .card-hover:hover .dress-image {
+            transform: scale(1.05);
+        }
+        
+        .no-items-container {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+              linear-gradient(to left, #FFD700, #000000);
+        }
+
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+        }
+
+        .flash-message {
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .flash-ok {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .flash-error {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .flash-warn {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-bar {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                linear-gradient(to left, #000000, #000000);
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+              linear-gradient(to left, #171717, #ffd700);
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-l from-amber-400 to-black min-h-screen font-inter">
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Navigation Bar -->
+    <nav class="nav-bar text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-8">
+                    <h1 class="text-2xl font-playfair font-bold">Dress Shop</h1>
+                    <a href="{{ url_for('items') }}" class="nav-link px-3 py-2 text-white hover:text-gray-200">
+                        Shop
+                    </a>
+                    <a href="{{ url_for('cart') }}" class="nav-link px-3 py-2 text-white hover:text-gray-200">
+                        Cart
+                    </a>
+                    {% if user and user.is_admin %}
+                        <a href="{{ url_for('admin') }}" class="nav-link px-3 py-2 text-white hover:text-gray-200">
+                            Admin
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="flex items-center space-x-4">
+                    {% if user %}
+                        <span class="text-white">Welcome, {{ user.username }}!</span>
+                        <a href="{{ url_for('logout') }}" class="nav-link px-4 py-2 bg-white bg-opacity-20 rounded-lg text-white hover:bg-opacity-30">
+                            Logout
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="nav-link px-4 py-2 bg-white bg-opacity-20 rounded-lg text-white hover:bg-opacity-30">
+                            Login
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white shadow-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <h2 class="text-4xl md:text-5xl font-playfair font-bold text-gray-800 text-center">
+                Available Dresses
+            </h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-pink-400 to-purple-500 mx-auto mt-4 rounded-full"></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Items Grid -->
+        <div class="grid-container">
+            {% for item in items %}
+            <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+                <div class="relative overflow-hidden">
+                    {% if item.image_url %}
+                        <img src="{{ item.image_url }}" 
+                             alt="{{ item.name }}" 
+                             class="dress-image w-full"
+                             onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+                    {% else %}
+                        <div class="dress-image w-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
+                            <div class="text-6xl">👗</div>
+                        </div>
+                    {% endif %}
+                    <div class="absolute top-4 right-4">
+                        <span class="price-tag text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            ₹{{ '%.2f'|format(item.price) }}
+                        </span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-playfair font-semibold text-gray-800 mb-2">
+                        {{ item.name }}
+                    </h3>
+                    <p class="text-2xl font-bold text-gray-900 mb-4">₹{{ '%.2f'|format(item.price) }}</p>
+                    <form action="{{ url_for('add_to_cart', item_id=item.id) }}" method="post" class="w-full">
+                        <button type="submit" class="add-to-cart-btn w-full text-white font-semibold py-3 px-6 rounded-xl">
+                            Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <!-- No Items Message -->
+            <div class="col-span-full">
+                <div class="no-items-container text-center py-16 px-8 rounded-2xl text-white">
+                    <div class="max-w-md mx-auto">
+                        <div class="text-6xl mb-6">👗</div>
+                        <h3 class="text-2xl font-playfair font-semibold mb-4">No Dresses Available</h3>
+                        <p class="text-lg opacity-90 mb-6">
+                            No items yet. 
+                            {% if user and user.is_admin %}
+                                <a href="{{ url_for('admin') }}" class="underline hover:no-underline font-semibold">
+                                    Go to Admin
+                                </a> 
+                                to add some.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Auto-hide flash messages -->
+    <script>
+        // Auto-hide flash messages after 5 seconds
+        setTimeout(function() {
+            const flashMessages = document.querySelector('.flash-messages');
+            if (flashMessages) {
+                flashMessages.style.opacity = '0';
+                flashMessages.style.transform = 'translateX(100%)';
+                setTimeout(() => flashMessages.remove(), 300);
+            }
+        }, 5000);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979543e05516465e',t:'MTc1NjkwMjY5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

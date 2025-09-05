@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegant Dresses - Premium Fashion Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        
+
+        
+        .hero-section {
+  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+              linear-gradient(to left, #FFD700, #000000);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+    </style>
+</head>
+<body class="font-inter bg-white">
+    <!-- Navigation -->
+    <nav class="bg-black shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="font-playfair text-2xl font-bold text-white">Elegant Dresses</h1>
+                </div>
+                <div class="flex items-center">
+                    <a href="{{ url_for('login') }}" class="bg-gradient-to-r from-black to-amber-400 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors">Login / Sign Up</a>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!-- Hero Section -->
+    <section class="hero-section min-h-screen flex items-center justify-center text-white relative" id="heroSection">
+        <div class="text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="font-playfair text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                Discover Your
+                <span class="block text-black">Perfect Dress</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-gray-200 max-w-2xl mx-auto leading-relaxed">
+                Elegant, sophisticated, and timeless pieces that celebrate your unique style and grace
+            </p>
+
+        </div>
+    </section>
+
+    <!-- Featured Collections -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-playfair text-4xl font-bold text-gray-900 mb-4">Featured Collections</h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Curated selections of our most beloved pieces, designed for every occasion</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Evening Wear -->
+                <div class="group cursor-pointer">
+                    <div class="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-8 h-80 flex items-center justify-center mb-6 group-hover:shadow-xl transition-all">
+                        <div class="text-center">
+                            <div class="text-6xl mb-4">👗</div>
+                            <h3 class="font-playfair text-2xl font-semibold text-gray-900">Evening Wear</h3>
+                        </div>
+                    </div>
+                    <h3 class="font-playfair text-xl font-semibold mb-2">Glamorous Evening</h3>
+                    <p class="text-gray-600">Stunning gowns for special occasions</p>
+                </div>
+
+                <!-- Casual Chic -->
+                <div class="group cursor-pointer">
+                    <div class="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl p-8 h-80 flex items-center justify-center mb-6 group-hover:shadow-xl transition-all">
+                        <div class="text-center">
+                            <div class="text-6xl mb-4">🌸</div>
+                            <h3 class="font-playfair text-2xl font-semibold text-gray-900">Casual Chic</h3>
+                        </div>
+                    </div>
+                    <h3 class="font-playfair text-xl font-semibold mb-2">Everyday Elegance</h3>
+                    <p class="text-gray-600">Comfortable yet sophisticated styles</p>
+                </div>
+
+                <!-- Bridal -->
+                <div class="group cursor-pointer">
+                    <div class="bg-gradient-to-br from-rose-100 to-pink-100 rounded-2xl p-8 h-80 flex items-center justify-center mb-6 group-hover:shadow-xl transition-all">
+                        <div class="text-center">
+                            <div class="text-6xl mb-4">💐</div>
+                            <h3 class="font-playfair text-2xl font-semibold text-gray-900">Bridal</h3>
+                        </div>
+                    </div>
+                    <h3 class="font-playfair text-xl font-semibold mb-2">Dream Wedding</h3>
+                    <p class="text-gray-600">Your perfect day deserves perfection</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <script>
+        // Add smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9795f694172e47ec',t:'MTc1NjkxMDAxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

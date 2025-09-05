@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - Clean & Modern</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+           background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+              linear-gradient(to left, #FFD700, #000000);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Page Heading */
+        h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: white;
+            text-align: center;
+            margin-bottom: 32px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: black;
+            border-radius: 16px;
+            padding: 40px 32px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            animation: slideUp 0.6s ease-out 0.2s both;
+        }
+
+        /* Labels */
+        label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        /* Input Fields */
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            background: #fafafa;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="text"]:hover,
+        input[type="password"]:hover {
+            border-color: #d1d5db;
+        }
+
+        /* Submit Button */
+        button[type="submit"] {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+              linear-gradient(to left, #FFD700, #000000);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+            
+        }
+
+        /* Login Link */
+        p {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: white;
+            animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+
+        p a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        p a:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            text-decoration: underline;
+        }
+
+        /* Input Groups */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .form-card {
+                padding: 32px 24px;
+                margin: 0 16px;
+            }
+
+            h2 {
+                font-size: 28px;
+                margin-bottom: 24px;
+            }
+
+            input[type="text"],
+            input[type="password"],
+            button[type="submit"] {
+                padding: 12px 14px;
+                font-size: 15px;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading button[type="submit"] {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* Form Validation Styles */
+        .error {
+            border-color: #ef4444 !important;
+            background: #fef2f2;
+        }
+
+        .error:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+        }
+
+        .success {
+            border-color: #10b981 !important;
+            background: #f0fdf4;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Focus Ring */
+        *:focus-visible {
+            outline: 2px solid #ffd700;
+            outline-offset: 2px;
+        }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            margin-top: 8px;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak { 
+            background: #ef4444; 
+            width: 33%; 
+        }
+
+        .strength-medium { 
+            background: #f59e0b; 
+            width: 66%; 
+        }
+
+        .strength-strong { 
+            background: #10b981; 
+            width: 100%; 
+        }
+
+        /* Welcome Message */
+        .welcome-text {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            margin-bottom: 16px;
+            animation: fadeInDown 0.6s ease-out 0.1s both;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-text">
+        Join our community today
+    </div>
+    
+    <h2>Signup</h2>
+    
+    <form method="post" class="form-card" id="signupForm">
+        <div class="input-group">
+            <label for="username">Username</label>
+            <input 
+                type="text" 
+                id="username"
+                name="username" 
+                required
+                autocomplete="username"
+                placeholder="Choose a username"
+                minlength="3"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                id="password"
+                name="password" 
+                required
+                autocomplete="new-password"
+                placeholder="Create a secure password"
+                minlength="6"
+            >
+            <div class="password-strength">
+                <div class="password-strength-bar" id="strengthBar"></div>
+            </div>
+        </div>
+
+        <button type="submit">Create Account</button>
+    </form>
+
+    <p>
+        Already have an account? 
+        <a href="/login">Login here</a>
+    </p>
+
+    <script>
+        // Form Enhancement Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('signupForm');
+            const inputs = form.querySelectorAll('input');
+            const passwordInput = document.getElementById('password');
+            const strengthBar = document.getElementById('strengthBar');
+            
+            // Password strength checker
+            function checkPasswordStrength(password) {
+                let strength = 0;
+                
+                if (password.length >= 6) strength++;
+                if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+                if (password.match(/\d/)) strength++;
+                if (password.match(/[^a-zA-Z\d]/)) strength++;
+                
+                return strength;
+            }
+
+            // Update password strength indicator
+            passwordInput.addEventListener('input', function() {
+                const strength = checkPasswordStrength(this.value);
+                
+                strengthBar.className = 'password-strength-bar';
+                
+                if (this.value.length === 0) {
+                    strengthBar.style.width = '0%';
+                } else if (strength <= 1) {
+                    strengthBar.classList.add('strength-weak');
+                } else if (strength <= 2) {
+                    strengthBar.classList.add('strength-medium');
+                } else {
+                    strengthBar.classList.add('strength-strong');
+                }
+            });
+
+            // Form submission handling
+            form.addEventListener('submit', function(e) {
+                // Add loading state
+                form.classList.add('loading');
+                
+                // Remove loading state after 2 seconds (for demo)
+                setTimeout(() => {
+                    form.classList.remove('loading');
+                }, 2000);
+            });
+
+            // Input validation and styling
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.value.trim() === '') {
+                        this.classList.add('error');
+                        this.classList.remove('success');
+                    } else if (this.checkValidity()) {
+                        this.classList.add('success');
+                        this.classList.remove('error');
+                    } else {
+                        this.classList.add('error');
+                        this.classList.remove('success');
+                    }
+                });
+
+                input.addEventListener('input', function() {
+                    this.classList.remove('error', 'success');
+                });
+            });
+
+            // Keyboard navigation enhancement
+            inputs.forEach((input, index) => {
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && index < inputs.length - 1) {
+                        e.preventDefault();
+                        inputs[index + 1].focus();
+                    }
+                });
+            });
+
+            // Username validation
+            const usernameInput = document.getElementById('username');
+            usernameInput.addEventListener('input', function() {
+                const username = this.value;
+                
+                // Remove special characters except underscore and hyphen
+                this.value = username.replace(/[^a-zA-Z0-9_-]/g, '');
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'978e3f6af304c87d',t:'MTc1NjgyOTExNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

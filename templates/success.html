@@ -1,0 +1,155 @@
+
+{% extends "base.html" %}
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    .success-container {
+        font-family: 'Inter', sans-serif;
+        min-height: 80vh;
+        background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 2rem;
+        margin: 2rem auto;
+        border-radius: 24px;
+        max-width: 600px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.4);
+    }
+    
+    .success-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: celebrationGlow 3s ease-in-out infinite;
+        pointer-events: none;
+    }
+    
+    @keyframes celebrationGlow {
+        0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.3; }
+        50% { transform: rotate(180deg) scale(1.2); opacity: 0.6; }
+    }
+    
+    h2 {
+        color: white;
+        font-size: 3.5rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        animation: bounceIn 1s ease-out;
+        position: relative;
+        z-index: 2;
+    }
+    
+    @keyframes bounceIn {
+        0% { transform: scale(0.3) translateY(-50px); opacity: 0; }
+        50% { transform: scale(1.05) translateY(-10px); }
+        70% { transform: scale(0.9) translateY(0); }
+        100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    
+    p {
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 1.3rem;
+        font-weight: 500;
+        text-align: center;
+        line-height: 1.6;
+        margin-bottom: 2.5rem;
+        max-width: 500px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        animation: slideUp 1s ease-out 0.3s both;
+        position: relative;
+        z-index: 2;
+    }
+    
+    @keyframes slideUp {
+        0% { transform: translateY(30px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+    
+    .btn {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        color: #047857;
+        padding: 1rem 2.5rem;
+        border-radius: 16px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        box-shadow: 
+            0 10px 25px rgba(0, 0, 0, 0.15),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        animation: slideUp 1s ease-out 0.6s both;
+        z-index: 2;
+        border: 2px solid transparent;
+    }
+    
+    .btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.2),
+            0 0 0 2px rgba(255, 255, 255, 0.3);
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        color: #065f46;
+    }
+    
+    .btn:active {
+        transform: translateY(-1px) scale(1.02);
+    }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+        left: 100%;
+    }
+    
+    /* Floating particles effect */
+    .success-container::after {
+        content: '✨ 🎊 ⭐ 💫 🌟';
+        position: absolute;
+        top: 20%;
+        left: 0;
+        right: 0;
+        font-size: 2rem;
+        text-align: center;
+        animation: floatingParticles 4s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    @keyframes floatingParticles {
+        0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+        25% { transform: translateY(-10px) rotate(90deg); opacity: 1; }
+        50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+        75% { transform: translateY(-10px) rotate(270deg); opacity: 1; }
+    }
+</style>
+
+<div class="success-container">
+    <h2>Thank you! 🎉</h2>
+    <p>Your payment was recorded and the screenshot has been sent to the admin email.</p>
+    <a class="btn" href="{{ url_for('items') }}">Back to shop</a>
+</div>
+{% endblock %}
