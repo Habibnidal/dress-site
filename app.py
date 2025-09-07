@@ -262,6 +262,17 @@ def update_cart(cart_id):
     flash("Cart updated.", "ok")
     return redirect(url_for('cart'))
 
+# ----- Cart: remove item -----
+@app.route('/cart/remove/<int:cart_id>', methods=['POST'])
+@login_required
+def remove_cart(cart_id):
+    row = Cart.query.get_or_404(cart_id)
+    db.session.delete(row)
+    db.session.commit()
+    flash("Item removed from cart.", "ok")
+    return redirect(url_for('cart'))
+
+
 # ----- Payment flow -----
 @app.route('/payment', methods=['GET', 'POST'])
 @login_required
@@ -335,6 +346,7 @@ def success():
 @app.route('/uploads/<path:filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 
 # -------------------- Bootstrapping --------------------
 def seed_data():
