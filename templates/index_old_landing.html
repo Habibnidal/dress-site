@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegant Dresses - Premium Fashion Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        
+        .hero-section {
+            background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3)), 
+                        url('{{ url_for("static", filename="drs.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .about-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('{{ url_for("static", filename="bgdressite.jpg") }}');
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-md shadow-lg fixed w-full top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <h1 class="font-playfair text-3xl font-bold gradient-text">Elegant Dresses</h1>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-purple-600 font-medium transition-colors">Home</a>
+                    <a href="#collections" class="text-gray-700 hover:text-purple-600 font-medium transition-colors">Collections</a>
+                    <a href="#about" class="text-gray-700 hover:text-purple-600 font-medium transition-colors">About</a>
+                    <a href="#contact" class="text-gray-700 hover:text-purple-600 font-medium transition-colors">Contact</a>
+                    <a href="{{ url_for('login') }}" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-full text-sm font-medium hover:shadow-lg transform hover:scale-105 transition-all">Login / Sign Up</a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-purple-600 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed inset-y-0 left-0 w-64 bg-white shadow-xl z-50">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="font-playfair text-2xl font-bold gradient-text">Menu</h2>
+                    <button id="close-menu-btn" class="text-gray-700 hover:text-purple-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <nav class="space-y-6">
+                    <a href="#home" class="block text-gray-700 hover:text-purple-600 font-medium text-lg transition-colors">Home</a>
+                    <a href="#collections" class="block text-gray-700 hover:text-purple-600 font-medium text-lg transition-colors">Collections</a>
+                    <a href="#about" class="block text-gray-700 hover:text-purple-600 font-medium text-lg transition-colors">About</a>
+                    <a href="#contact" class="block text-gray-700 hover:text-purple-600 font-medium text-lg transition-colors">Contact</a>
+                    <a href="{{ url_for('login') }}" class="block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-full text-center font-medium hover:shadow-lg transition-all">Login / Sign Up</a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Mobile menu overlay -->
+        <div id="mobile-overlay" class="hidden md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section min-h-screen flex items-center justify-center text-white relative" id="home">
+        <div class="absolute inset-0 bg-gradient-to-r from-purple-900/30 to-pink-900/30"></div>
+        <div class="text-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="floating-animation">
+                <h1 class="font-playfair text-4xl sm:text-6xl lg:text-8xl font-bold mb-8 leading-tight">
+                    Discover Your
+                    <span class="block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Perfect Dress</span>
+                </h1>
+            </div>
+            <p class="text-lg sm:text-xl lg:text-2xl mb-12 text-gray-200 max-w-3xl mx-auto leading-relaxed">
+                Elegant, sophisticated, and timeless pieces that celebrate your unique style and grace. Experience luxury fashion that makes every moment special.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#collections" class="glass-effect px-8 py-4 rounded-full text-white font-semibold hover:bg-white/20 transition-all transform hover:scale-105 border border-white/30">
+                    <i class="fas fa-shopping-bag mr-2"></i>Shop Collections
+                </a>
+                <a href="#about" class="bg-gradient-to-r from-pink-500 to-purple-600 px-8 py-4 rounded-full text-white font-semibold hover:shadow-xl transform hover:scale-105 transition-all">
+                    <i class="fas fa-play mr-2"></i>Learn More
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-white text-2xl opacity-70"></i>
+        </div>
+    </section>
+
+    <!-- Featured Collections -->
+    <section class="py-24 bg-gradient-to-br from-gray-50 to-white" id="collections">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="font-playfair text-5xl lg:text-6xl font-bold gradient-text mb-6">Featured Collections</h2>
+                <p class="text-gray-600 text-xl max-w-3xl mx-auto leading-relaxed">Curated selections of our most beloved pieces, designed for every occasion and crafted with exceptional attention to detail</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+                <!-- Evening Wear -->
+                <div class="card-hover group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 p-1">
+                        <div class="bg-white rounded-3xl p-8 h-96 flex flex-col items-center justify-center text-center">
+                            <div class="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-crown text-4xl text-purple-600"></i>
+                            </div>
+                            <h3 class="font-playfair text-3xl font-bold text-gray-900 mb-4">Evening Wear</h3>
+                            <p class="text-gray-600 text-lg leading-relaxed">Stunning gowns and elegant dresses for your most special occasions</p>
+                            <div class="mt-6 px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                                Explore Collection
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Casual Chic -->
+                <div class="card-hover group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-600 p-1">
+                        <div class="bg-white rounded-3xl p-8 h-96 flex flex-col items-center justify-center text-center">
+                            <div class="w-24 h-24 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-leaf text-4xl text-blue-600"></i>
+                            </div>
+                            <h3 class="font-playfair text-3xl font-bold text-gray-900 mb-4">Casual Chic</h3>
+                            <p class="text-gray-600 text-lg leading-relaxed">Comfortable yet sophisticated styles for everyday elegance</p>
+                            <div class="mt-6 px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                                Explore Collection
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bridal -->
+                <div class="card-hover group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 via-pink-700 to-purple-600 p-1">
+                        <div class="bg-white rounded-3xl p-8 h-96 flex flex-col items-center justify-center text-center">
+                            <div class="w-24 h-24 bg-gradient-to-br from-rose-100 to-pink-100 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-heart text-4xl text-rose-600"></i>
+                            </div>
+                            <h3 class="font-playfair text-3xl font-bold text-gray-900 mb-4">Bridal</h3>
+                            <p class="text-gray-600 text-lg leading-relaxed">Your perfect day deserves the perfect dress - timeless bridal elegance</p>
+                            <div class="mt-6 px-6 py-2 bg-gradient-to-r from-rose-600 to-pink-600 text-white rounded-full text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                                Explore Collection
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-24 parallax-bg about-bg relative" id="about">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="text-white">
+                    <h2 class="font-playfair text-5xl lg:text-6xl font-bold mb-8 leading-tight">
+                        Crafting Dreams Into
+                        <span class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Reality</span>
+                    </h2>
+                    <p class="text-xl text-gray-200 mb-8 leading-relaxed">
+                        For over a decade, we've been dedicated to creating exceptional dresses that celebrate the unique beauty of every woman. Our commitment to quality, craftsmanship, and timeless design has made us a trusted name in luxury fashion.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-pink-400 text-xl mr-4"></i>
+                            <span class="text-lg">Premium quality fabrics and materials</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-pink-400 text-xl mr-4"></i>
+                            <span class="text-lg">Expert craftsmanship and attention to detail</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-pink-400 text-xl mr-4"></i>
+                            <span class="text-lg">Personalized fitting and styling services</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-effect rounded-3xl p-8">
+                    <div class="text-center text-white">
+                        <h3 class="font-playfair text-3xl font-bold mb-6">Why Choose Us?</h3>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-pink-400 mb-2">10+</div>
+                                <div class="text-sm text-gray-300">Years Experience</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-purple-400 mb-2">5000+</div>
+                                <div class="text-sm text-gray-300">Happy Customers</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-pink-400 mb-2">500+</div>
+                                <div class="text-sm text-gray-300">Unique Designs</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-purple-400 mb-2">24/7</div>
+                                <div class="text-sm text-gray-300">Customer Support</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="font-playfair text-5xl lg:text-6xl font-bold gradient-text mb-6">What Our Customers Say</h2>
+                <p class="text-gray-600 text-xl max-w-3xl mx-auto">Don't just take our word for it - hear from the amazing women who trust us with their special moments</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card-hover bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-8 text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <i class="fas fa-quote-left text-white text-2xl"></i>
+                    </div>
+                    <p class="text-gray-700 text-lg mb-6 italic leading-relaxed">"Absolutely stunning! The quality exceeded my expectations and I felt like a princess on my wedding day."</p>
+                    <div class="flex justify-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <h4 class="font-playfair text-xl font-semibold text-gray-900">Sarah Johnson</h4>
+                    <p class="text-gray-600">Bride</p>
+                </div>
+                
+                <div class="card-hover bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <i class="fas fa-quote-left text-white text-2xl"></i>
+                    </div>
+                    <p class="text-gray-700 text-lg mb-6 italic leading-relaxed">"Perfect fit, beautiful design, and exceptional customer service. I'll definitely be back for more!"</p>
+                    <div class="flex justify-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <h4 class="font-playfair text-xl font-semibold text-gray-900">Emily Chen</h4>
+                    <p class="text-gray-600">Fashion Enthusiast</p>
+                </div>
+                
+                <div class="card-hover bg-gradient-to-br from-rose-50 to-pink-50 rounded-3xl p-8 text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-rose-600 to-pink-600 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <i class="fas fa-quote-left text-white text-2xl"></i>
+                    </div>
+                    <p class="text-gray-700 text-lg mb-6 italic leading-relaxed">"The attention to detail is incredible. Every stitch shows the care and craftsmanship that goes into each piece."</p>
+                    <div class="flex justify-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <h4 class="font-playfair text-xl font-semibold text-gray-900">Maria Rodriguez</h4>
+                    <p class="text-gray-600">Event Coordinator</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-24 bg-gradient-to-r from-purple-600 to-pink-600">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="font-playfair text-4xl lg:text-5xl font-bold text-white mb-6">Stay in Style</h2>
+            <p class="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">Subscribe to our newsletter and be the first to know about new collections, exclusive offers, and fashion tips.</p>
+            <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input id="newsletter-email" type="email" placeholder="Enter your email" class="flex-1 px-6 py-4 rounded-full border-0 focus:ring-4 focus:ring-white/30 focus:outline-none text-gray-900">
+                <button id="newsletter-submit" class="bg-white text-purple-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors transform hover:scale-105">
+                    Subscribe
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16" id="contact">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Brand -->
+                <div class="lg:col-span-2">
+                    <h3 class="font-playfair text-3xl font-bold gradient-text mb-4">Elegant Dresses</h3>
+                    <p class="text-gray-300 text-lg mb-6 max-w-md">Creating timeless elegance and celebrating the unique beauty of every woman through exceptional craftsmanship and design.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center hover:shadow-lg transform hover:scale-110 transition-all">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center hover:shadow-lg transform hover:scale-110 transition-all">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center hover:shadow-lg transform hover:scale-110 transition-all">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center hover:shadow-lg transform hover:scale-110 transition-all">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-playfair text-xl font-semibold mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#collections" class="text-gray-300 hover:text-white transition-colors">Collections</a></li>
+                        <li><a href="#about" class="text-gray-300 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="{{ url_for('login') }}" class="text-gray-300 hover:text-white transition-colors">Account</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Size Guide</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="font-playfair text-xl font-semibold mb-6">Contact Us</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-purple-400 mr-3"></i>
+                            <span class="text-gray-300">123 Fashion Street, Style City</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-phone text-purple-400 mr-3"></i>
+                            <span class="text-gray-300">+1 (555) 123-4567</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-purple-400 mr-3"></i>
+                            <span class="text-gray-300">hello@elegantdresses.com</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-clock text-purple-400 mr-3"></i>
+                            <span class="text-gray-300">Mon-Sat: 9AM-8PM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 Elegant Dresses. All rights reserved. Made with ❤️ for fashion lovers.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+
+        function openMobileMenu() {
+            mobileMenu.classList.add('active');
+            mobileOverlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        closeMenuBtn.addEventListener('click', closeMobileMenu);
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+
+        // Close mobile menu when clicking on navigation links
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+
+        // Add smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('bg-white/98');
+            } else {
+                nav.classList.remove('bg-white/98');
+            }
+        });
+
+        // Newsletter subscription
+        const newsletterBtn = document.getElementById('newsletter-submit');
+        const newsletterEmail = document.getElementById('newsletter-email');
+        if (newsletterBtn && newsletterEmail) {
+            newsletterBtn.addEventListener('click', function() {
+                const email = newsletterEmail.value.trim();
+                if (email) {
+                    alert("Thank you for subscribing! We'll keep you updated with our latest collections.");
+                    newsletterEmail.value = '';
+                } else {
+                    alert('Please enter a valid email address.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

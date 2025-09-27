@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Elegant Dresses{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  {% block head_extra %}{% endblock %}
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+    .font-playfair { font-family: 'Playfair Display', serif; }
+    .font-inter { font-family: 'Inter', sans-serif; }
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+    .mobile-menu { transform: translateX(-100%); transition: transform 0.3s ease-in-out; }
+    .mobile-menu.active { transform: translateX(0); }
+    .glass-effect { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); }
+  </style>
+</head>
+<body class="font-inter bg-gray-50">
+  <!-- Global Navbar -->
+  <nav class="bg-white/95 backdrop-blur-md shadow-sm fixed w-full top-0 z-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="{{ url_for('items') }}" class="font-playfair text-2xl font-bold gradient-text">Elegant Dresses</a>
+        <div class="hidden md:flex items-center space-x-6">
+          <a href="{{ url_for('items') }}" class="text-gray-700 hover:text-purple-600 font-medium">Shop</a>
+          <a href="{{ url_for('cart') }}" class="text-gray-700 hover:text-purple-600 font-medium">Cart</a>
+          {% if user and user.is_admin %}
+            <a href="{{ url_for('admin') }}" class="text-gray-700 hover:text-purple-600 font-medium">Admin</a>
+          {% endif %}
+          {% if session.get('user_id') %}
+            <a href="{{ url_for('logout') }}" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-5 py-2 rounded-full text-sm font-medium hover:shadow-lg transform hover:scale-105 transition-all">Logout</a>
+          {% else %}
+            <a href="{{ url_for('login') }}" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-5 py-2 rounded-full text-sm font-medium hover:shadow-lg transform hover:scale-105 transition-all">Login / Sign Up</a>
+          {% endif %}
+        </div>
+        <button id="mobile-menu-btn" class="md:hidden text-gray-700 hover:text-purple-600">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile drawer -->
+    <div id="mobile-menu" class="mobile-menu md:hidden fixed inset-y-0 left-0 w-64 bg-white shadow-xl z-50">
+      <div class="p-6 space-y-6">
+        <div class="flex justify-between items-center">
+          <h2 class="font-playfair text-2xl font-bold gradient-text">Menu</h2>
+          <button id="close-menu-btn" class="text-gray-700 hover:text-purple-600">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <nav class="space-y-4">
+          <a href="{{ url_for('items') }}" class="block text-gray-700 hover:text-purple-600 font-medium">Shop</a>
+          <a href="{{ url_for('cart') }}" class="block text-gray-700 hover:text-purple-600 font-medium">Cart</a>
+          {% if user and user.is_admin %}
+            <a href="{{ url_for('admin') }}" class="block text-gray-700 hover:text-purple-600 font-medium">Admin</a>
+          {% endif %}
+          {% if session.get('user_id') %}
+            <a href="{{ url_for('logout') }}" class="block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-full text-center font-medium hover:shadow-lg transition-all">Logout</a>
+          {% else %}
+            <a href="{{ url_for('login') }}" class="block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-full text-center font-medium hover:shadow-lg transition-all">Login / Sign Up</a>
+          {% endif %}
+        </nav>
+      </div>
+    </div>
+    <div id="mobile-overlay" class="hidden md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+  </nav>
+
+  <!-- Flash messages and main content wrapper -->
+  <main class="pt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="space-y-2 mb-6">
+            {% for cat, msg in messages %}
+              <div class="rounded-lg px-4 py-3 text-white {{ 'bg-green-600' if cat=='ok' else ('bg-yellow-600' if cat=='warn' else 'bg-red-600') }}">
+                {{ msg }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Global footer -->
+  <footer class="bg-gray-900 text-white mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
+      <div>
+        <h3 class="font-playfair text-2xl font-bold gradient-text mb-3">Elegant Dresses</h3>
+        <p class="text-gray-300">Timeless elegance crafted with love. Explore our refined collection and feel your best.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-3">Links</h4>
+        <ul class="space-y-2 text-gray-300">
+          <li><a href="{{ url_for('items') }}" class="hover:text-white">Shop</a></li>
+          <li><a href="{{ url_for('cart') }}" class="hover:text-white">Cart</a></li>
+          {% if user and user.is_admin %}<li><a href="{{ url_for('admin') }}" class="hover:text-white">Admin</a></li>{% endif %}
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-3">Contact</h4>
+        <p class="text-gray-300">hello@elegantdresses.com</p>
+        <div class="flex gap-3 mt-4">
+          <a class="w-9 h-9 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center" href="#"><i class="fab fa-instagram"></i></a>
+          <a class="w-9 h-9 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center" href="#"><i class="fab fa-facebook-f"></i></a>
+          <a class="w-9 h-9 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center" href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-gray-800 py-6 text-center text-gray-400">&copy; 2024 Elegant Dresses</div>
+  </footer>
+
+  {% block body_scripts %}{% endblock %}
+  <script>
+    // Mobile menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const closeMenuBtn = document.getElementById('close-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    function openMobileMenu(){ mobileMenu.classList.add('active'); mobileOverlay.classList.remove('hidden'); document.body.style.overflow='hidden'; }
+    function closeMobileMenu(){ mobileMenu.classList.remove('active'); mobileOverlay.classList.add('hidden'); document.body.style.overflow='auto'; }
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileMenu);
+    if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeMobileMenu);
+    if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileMenu);
+  </script>
+</body>
+</html>

@@ -1,22 +1,15 @@
-{% extends "base.html" %}
-{% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <style>
+{% extends "base_v2.html" %}
+{% block title %}Cart - Elegant Dresses{% endblock %}
+{% block head_extra %}
+<style>
         .font-playfair { font-family: 'Playfair Display', serif; }
 
         .cart-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-              linear-gradient(to left, #FFD700, #000000);
+            background: linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25)),
+              linear-gradient(135deg, #1f2937, #0f172a);
             min-height: 100vh;
             border-radius: 16px;
         }
@@ -89,9 +82,7 @@
         }
 
         .update-btn {
-            
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-              linear-gradient(to left, #FFD700, #000000);
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
             padding: 0.5rem 1rem;
             border: none;
             border-radius: 6px;
@@ -99,7 +90,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .update-btn:hover { background: #3182ce; }
+        .update-btn:hover { filter: brightness(1.05); }
 
         .line-total {
             font-weight: 700;
@@ -124,7 +115,7 @@
         }
 
         .payment-btn {
-            background: linear-gradient(135deg, #0b0b0b, #080808);
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
             color: white;
             padding: 1rem 2rem;
             border-radius: 12px;
@@ -133,12 +124,9 @@
             text-decoration: none;
             display: inline-block;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.35);
         }
-        .payment-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.6);
-        }
+        .payment-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5); }
 
         .empty-cart {
             background: white;
@@ -155,8 +143,7 @@
         .continue-shopping:hover { text-decoration: underline; }
 
         .remove-btn {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-              linear-gradient(to left, #FFD700, #000000);;
+            background: linear-gradient(135deg, #f43f5e, #ec4899);
             color: white;
             padding: 8px 12px;
             border: none;
@@ -166,11 +153,12 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .remove-btn:hover { background: darkred; }
-    </style>
-</head>
-<body>
-<div class="cart-container">
+        .remove-btn:hover { filter: brightness(1.05); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="cart-container mt-10">
     <h2 class="text-4xl font-playfair font-bold text-white text-center mb-8">Your Cart</h2>
 
     {% if cart_items %}
@@ -234,6 +222,9 @@
     {% endif %}
 </div>
 
+{% endblock %}
+
+{% block body_scripts %}
 <script>
 function handleRemove(form) {
     const row = form.closest('tr');
@@ -243,6 +234,4 @@ function handleRemove(form) {
     return true; // allow form submission
 }
 </script>
-</body>
-</html>
 {% endblock %}

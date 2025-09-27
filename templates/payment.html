@@ -1,6 +1,5 @@
-
-{% extends "base.html" %}
-{% block content %}
+{% extends "base_v2.html" %}
+{% block head_extra %}
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
@@ -14,8 +13,8 @@
 }
 
 .payment-card {
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-              linear-gradient(to left, #FFD700, #000000);
+    background: linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25)),
+              linear-gradient(135deg, #111827, #0b1220);
     border-radius: 20px;
     padding: 3rem;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
@@ -99,8 +98,7 @@
 }
 
 .pay-now-btn {
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-              linear-gradient(to left, #FFD700, #000000);
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
     color: white;
     padding: 18px 48px;
     border: none;
@@ -117,9 +115,9 @@
 }
 
 .pay-now-btn:hover {
-    background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+    filter: brightness(1.05);
     transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(245, 87, 108, 0.4);
+    box-shadow: 0 12px 35px rgba(139, 92, 246, 0.35);
 }
 
 .pay-now-btn:active {
@@ -195,8 +193,10 @@
     }
 }
 </style>
+{% endblock %}
 
-<div class="payment-container">
+{% block content %}
+<div class="payment-container mt-12">
     <div class="payment-card">
         <div class="payment-header">
             <h2 class="payment-title font-playfair">Secure Payment</h2>

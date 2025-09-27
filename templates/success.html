@@ -1,14 +1,13 @@
-
-{% extends "base.html" %}
-{% block content %}
+{% extends "base_v2.html" %}
+{% block head_extra %}
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     
     .success-container {
         font-family: 'Inter', sans-serif;
         min-height: 80vh;
-        background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-              linear-gradient(to left, #FFD700, #000000);
+        background: linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25)),
+              linear-gradient(135deg, #111827, #0b1220);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -100,11 +99,9 @@
     
     .btn:hover {
         transform: translateY(-3px) scale(1.05);
-        box-shadow: 
-            0 20px 40px rgba(0, 0, 0, 0.2),
-            0 0 0 2px rgba(255, 255, 255, 0.3);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.3);
         background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        color: #065f46;
+        color: #111827;
     }
     
     .btn:active {
@@ -147,8 +144,10 @@
         75% { transform: translateY(-10px) rotate(270deg); opacity: 1; }
     }
 </style>
+{% endblock %}
 
-<div class="success-container">
+{% block content %}
+<div class="success-container mt-12">
     <h2>Thank you! 🎉</h2>
     <p>Your payment was recorded and the screenshot has been sent to the admin email.</p>
     <a class="btn" href="{{ url_for('items') }}">Back to shop</a>
